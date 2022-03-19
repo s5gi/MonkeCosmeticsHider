@@ -12,3 +12,5 @@ Before
 
 After
 ![insert happy image of all seeing monke here. :D](https://raw.githubusercontent.com/the5gi/MonkeCosmeticsHider/main/img/after.jpg)
+
+Credit to auralius-dev for Making the Original Mod. This is just an Updated Version since his mod is out of date :D 
