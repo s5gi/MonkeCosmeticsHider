@@ -11,7 +11,16 @@ namespace MonkeCosmeticsHider
 
         private static readonly string[] lastCosmetics = new string[3];
         private static bool firstHide = false;
-
+        void OnEnable()
+        {
+            HarmonyPatches.ApplyHarmonyPatches();
+            RehideCosmetics();
+            Postfix();
+        }
+        void OnDisable()
+        {
+            HarmonyPatches.RemoveHarmonyPatches();
+        }
         private static void RehideCosmetics()
         {
             foreach (GameObject obj in FindObjectsOfType<GameObject>()) // Cycle through all game objects.
@@ -25,20 +34,22 @@ namespace MonkeCosmeticsHider
                         {
                             do // Filter the cosmetic buttons and stuff.
                             {
-                                obj.layer = 4; // Set layer to 4.
+                                obj.layer = 5; // Set layer to 5.
                                 firstHide = true; // If a cosmetic has actually been hidden, then stop checking.
                             } while (!(obj.name.Contains("Button") || obj.name.Contains("BUTTON") || obj.name.Contains("Badge") || obj.name.Contains("BADGE") || obj.name.Contains("Text") || obj.name.Contains("TEXT") || obj.name.Contains("GLASSES") || obj.name.Contains("Glasses")));
                         }
                     }
                     catch
                     {
-                        // Getting the name on some game objects will throw an error. Unavoidable to my knowledge, as testing if it will error causes the error. So just skip that object and keep going.
+                        
                     }
                 }
             }
-
-            Camera.allCameras[0].cullingMask = ~(1 << 4); // Hide layer 4 from the main camera. I'm pretty sure that the main cameras index in allCameras won't change, so I'm not checking if index 0 is the right camera.
+            Camera.allCameras[0].cullingMask = ~(1 << 5); // Hide layer 5 from the main camera. I'm pretty sure that the main cameras index in allCameras won't change, so I'm not checking if index 0 is the right camera.
         }
+
+
+
         private static void Postfix()
         {
             if (!firstHide) RehideCosmetics(); // Cosmetics take a bit to load in, so wait until a cosmetic is actually hidden.
